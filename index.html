@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rohan Shrestha — Design Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #0D0D0D;
+    --paper: #F5F1EB;
+    --accent: #E84B2A;
+    --accent2: #1A5CFF;
+    --mid: #6B6560;
+    --card: #EDEAE3;
+    --mono: 'DM Mono', monospace;
+    --display: 'Bebas Neue', sans-serif;
+    --body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── CUSTOM CURSOR ──────────────────── */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.25s, height 0.25s;
+  }
+  body:hover .cursor { opacity: 1; }
+  a:hover ~ .cursor, button:hover ~ .cursor { width: 20px; height: 20px; }
+
+  /* ── NOISE TEXTURE ──────────────────── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 100; opacity: 0.5;
+  }
+
+  /* ── NAV ────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 48px;
+    background: rgba(245,241,235,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(13,13,13,0.08);
+  }
+  .nav-logo {
+    font-family: var(--display);
+    font-size: 22px; letter-spacing: 2px;
+    color: var(--ink); text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--mid); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ───────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: flex-end;
+    padding: 0 48px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg-text {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--display);
+    font-size: clamp(120px, 20vw, 260px);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(13,13,13,0.06);
+    white-space: nowrap;
+    pointer-events: none; user-select: none;
+    letter-spacing: 4px;
+    animation: bgDrift 20s ease-in-out infinite alternate;
+  }
+  @keyframes bgDrift {
+    from { transform: translate(-52%, -50%) rotate(-1deg); }
+    to   { transform: translate(-48%, -50%) rotate(1deg); }
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 900px; }
+  .hero-tag {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 2px; color: var(--accent);
+    text-transform: uppercase; margin-bottom: 20px;
+    opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
+  }
+  .hero-name {
+    font-family: var(--display);
+    font-size: clamp(72px, 12vw, 160px);
+    line-height: 0.9; letter-spacing: 2px;
+    color: var(--ink);
+    opacity: 0; animation: fadeUp 0.8s 0.35s forwards;
+  }
+  .hero-name span { color: var(--accent); }
+  .hero-sub {
+    font-size: 18px; font-weight: 300;
+    color: var(--mid); margin-top: 28px;
+    max-width: 520px; line-height: 1.7;
+    opacity: 0; animation: fadeUp 0.8s 0.55s forwards;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 44px;
+    font-family: var(--mono); font-size: 12px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--ink); text-decoration: none;
+    border-bottom: 1.5px solid var(--accent);
+    padding-bottom: 4px;
+    transition: gap 0.3s, color 0.2s;
+    opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero-cta:hover { gap: 20px; color: var(--accent); }
+  .hero-scroll {
+    position: absolute; right: 48px; bottom: 80px;
+    writing-mode: vertical-rl;
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--mid);
+    opacity: 0; animation: fadeIn 1s 1.2s forwards;
+  }
+  .hero-scroll::after {
+    content: '';
+    display: block; width: 1px; height: 60px;
+    background: var(--mid); margin: 12px auto 0;
+    animation: lineGrow 1.5s 1.5s ease forwards;
+    transform-origin: top; transform: scaleY(0);
+  }
+  @keyframes lineGrow { to { transform: scaleY(1); } }
+
+  /* ── SECTION BASE ───────────────────── */
+  section { padding: 120px 48px; }
+  .section-label {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(42px, 6vw, 80px);
+    line-height: 1; letter-spacing: 1px;
+    color: var(--ink); margin-bottom: 60px;
+  }
+
+  /* ── ABOUT ──────────────────────────── */
+  .about { background: var(--ink); color: var(--paper); }
+  .about .section-title { color: var(--paper); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: start;
+  }
+  .about-text { font-size: 17px; line-height: 1.85; font-weight: 300; color: rgba(245,241,235,0.8); }
+  .about-text strong { color: var(--paper); font-weight: 500; }
+  .about-text em { color: var(--accent); font-style: normal; }
+  .about-stats { display: flex; flex-direction: column; gap: 32px; }
+  .stat { border-top: 1px solid rgba(245,241,235,0.15); padding-top: 24px; }
+  .stat-num {
+    font-family: var(--display); font-size: 64px;
+    color: var(--accent); line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(245,241,235,0.5); margin-top: 6px;
+  }
+
+  /* ── TOOLS ──────────────────────────── */
+  .tools-strip {
+    background: var(--accent);
+    padding: 20px 0; overflow: hidden;
+  }
+  .tools-track {
+    display: flex; gap: 60px;
+    animation: marquee 18s linear infinite;
+    width: max-content;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .tool-item {
+    font-family: var(--display); font-size: 22px;
+    letter-spacing: 3px; color: var(--paper);
+    white-space: nowrap;
+  }
+  .tool-dot { color: rgba(245,241,235,0.4); }
+
+  /* ── WORK / PROJECTS ────────────────── */
+  .work { background: var(--paper); }
+  .projects-list { display: flex; flex-direction: column; gap: 2px; }
+  .project-item {
+    background: var(--card);
+    border: 1px solid rgba(13,13,13,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .project-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(13,13,13,0.12);
+  }
+  .project-header {
+    display: grid; grid-template-columns: 80px 1fr auto;
+    align-items: center; gap: 32px;
+    padding: 36px 40px; cursor: pointer;
+  }
+  .project-num {
+    font-family: var(--display); font-size: 48px;
+    color: rgba(13,13,13,0.12); line-height: 1;
+  }
+  .project-title-wrap {}
+  .project-cat {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 6px;
+  }
+  .project-title {
+    font-family: var(--display); font-size: 36px;
+    letter-spacing: 1px; color: var(--ink);
+  }
+  .project-arrow {
+    font-size: 28px; color: var(--mid);
+    transition: transform 0.3s, color 0.2s;
+  }
+  .project-item:hover .project-arrow { transform: rotate(45deg); color: var(--accent); }
+  .project-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.5s ease, padding 0.3s;
+    padding: 0 40px;
+  }
+  .project-body.open { max-height: 600px; padding: 0 40px 40px; }
+  .project-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 48px; padding-top: 32px;
+    border-top: 1px solid rgba(13,13,13,0.08);
+  }
+  .project-desc { font-size: 15px; line-height: 1.8; color: var(--mid); }
+  .project-desc p { margin-bottom: 12px; }
+  .project-meta { display: flex; flex-direction: column; gap: 20px; }
+  .meta-row { display: flex; flex-direction: column; gap: 4px; }
+  .meta-label {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--accent);
+  }
+  .meta-value { font-size: 14px; color: var(--ink); font-weight: 500; }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .tag {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 5px 12px; border: 1px solid rgba(13,13,13,0.2);
+    border-radius: 2px; color: var(--mid);
+  }
+  .project-award {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: var(--paper);
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 2px; margin-top: 12px;
+  }
+
+  /* ── SKILLS SECTION ─────────────────── */
+  .skills-section { background: var(--card); }
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  }
+  .skill-card {
+    background: var(--paper); padding: 36px 32px;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .skill-card:hover { background: var(--ink); transform: translateY(-4px); }
+  .skill-card:hover .skill-name { color: var(--paper); }
+  .skill-card:hover .skill-tools { color: rgba(245,241,235,0.5); }
+  .skill-card:hover .skill-icon { color: var(--accent); }
+  .skill-icon { font-size: 28px; margin-bottom: 20px; transition: color 0.3s; }
+  .skill-name {
+    font-family: var(--display); font-size: 24px;
+    letter-spacing: 1px; color: var(--ink);
+    margin-bottom: 10px; transition: color 0.3s;
+  }
+  .skill-tools {
+    font-family: var(--mono); font-size: 11px;
+    line-height: 1.8; color: var(--mid);
+    transition: color 0.3s;
+  }
+
+  /* ── CONTACT ────────────────────────── */
+  .contact { background: var(--ink); text-align: center; }
+  .contact .section-title { color: var(--paper); font-size: clamp(52px, 9vw, 120px); }
+  .contact-sub {
+    font-size: 16px; color: rgba(245,241,235,0.5);
+    font-weight: 300; margin-bottom: 52px;
+    font-family: var(--mono); letter-spacing: 1px;
+  }
+  .contact-links { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+  .contact-link {
+    font-family: var(--mono); font-size: 12px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--paper); text-decoration: none;
+    border-bottom: 1px solid rgba(245,241,235,0.2);
+    padding-bottom: 4px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .contact-link:hover { color: var(--accent); border-color: var(--accent); }
+  .footer-note {
+    margin-top: 80px;
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 2px; color: rgba(245,241,235,0.2);
+  }
+
+  /* ── ANIMATIONS ─────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── RESPONSIVE ─────────────────────── */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .hero, section { padding-left: 24px; padding-right: 24px; }
+    .hero { padding-bottom: 60px; }
+    .about-grid, .project-inner, .skills-grid { grid-template-columns: 1fr; }
+    .project-header { grid-template-columns: 48px 1fr auto; gap: 16px; padding: 24px; }
+    .hero-scroll { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">RS</a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg-text">DESIGN</div>
+  <div class="hero-content">
+    <p class="hero-tag">✦ Available for work · Kathmandu, Nepal</p>
+    <h1 class="hero-name">ROHAN<br><span>SHRESTHA</span></h1>
+    <p class="hero-sub">Graphic Designer & UI/UX Designer crafting interfaces that feel as good as they look — where visual storytelling meets functional code.</p>
+    <a class="hero-cta" href="#work">View Selected Work →</a>
+  </div>
+  <span class="hero-scroll">Scroll</span>
+</section>
+
+<!-- TOOLS MARQUEE -->
+<div class="tools-strip">
+  <div class="tools-track" id="track">
+    <span class="tool-item">Figma</span><span class="tool-dot">·</span>
+    <span class="tool-item">Adobe Illustrator</span><span class="tool-dot">·</span>
+    <span class="tool-item">Photoshop</span><span class="tool-dot">·</span>
+    <span class="tool-item">Adobe XD</span><span class="tool-dot">·</span>
+    <span class="tool-item">Canva</span><span class="tool-dot">·</span>
+    <span class="tool-item">React.js</span><span class="tool-dot">·</span>
+    <span class="tool-item">Tailwind CSS</span><span class="tool-dot">·</span>
+    <span class="tool-item">UI/UX Design</span><span class="tool-dot">·</span>
+    <span class="tool-item">Brand Identity</span><span class="tool-dot">·</span>
+    <span class="tool-item">Figma</span><span class="tool-dot">·</span>
+    <span class="tool-item">Adobe Illustrator</span><span class="tool-dot">·</span>
+    <span class="tool-item">Photoshop</span><span class="tool-dot">·</span>
+    <span class="tool-item">Adobe XD</span><span class="tool-dot">·</span>
+    <span class="tool-item">Canva</span><span class="tool-dot">·</span>
+    <span class="tool-item">React.js</span><span class="tool-dot">·</span>
+    <span class="tool-item">Tailwind CSS</span><span class="tool-dot">·</span>
+    <span class="tool-item">UI/UX Design</span><span class="tool-dot">·</span>
+    <span class="tool-item">Brand Identity</span><span class="tool-dot">·</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <p class="section-label reveal">// About</p>
+  <h2 class="section-title reveal">Designed to<br>stand out.</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm a <strong>graphic designer and UI/UX designer</strong> based in Kathmandu, Nepal — currently studying Software Engineering at PCPS College while building real-world design and development work.</p>
+      <br>
+      <p>My edge? I <em>design and build</em>. Every interface I create, I can also code — which means my designs are grounded in what's actually possible, and my handoffs are pixel-perfect. I work in <strong>Figma, Adobe Illustrator, Photoshop, and XD</strong>, and I build with <strong>React + Tailwind CSS</strong>.</p>
+      <br>
+      <p>I've competed in hackathons, designed for local Kathmandu businesses, and built platforms that reached national-level competitions. I bring the same energy to every project — whether it's a brand identity, a mobile app interface, or a full product.</p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat">
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Client websites designed & built</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2nd</div>
+        <div class="stat-label">Place — Sankalpa Hackathon 2026</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2x</div>
+        <div class="stat-label">National-level hackathon finalist</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="work" id="work">
+  <p class="section-label reveal">// Selected Work</p>
+  <h2 class="section-title reveal">Three projects.<br>Real results.</h2>
+
+  <div class="projects-list">
+
+    <!-- PROJECT 1 -->
+    <div class="project-item reveal">
+      <div class="project-header" onclick="toggleProject(this)">
+        <div class="project-num">01</div>
+        <div class="project-title-wrap">
+          <div class="project-cat">UI/UX Design · Full-Stack Development</div>
+          <div class="project-title">ParkFlow — Smart Parking Platform</div>
+        </div>
+        <div class="project-arrow">+</div>
+      </div>
+      <div class="project-body">
+        <div class="project-inner">
+          <div class="project-desc">
+            <p>A full-stack smart parking management platform designed and built under 3-day hackathon constraints at Sankalpa Hackathon 2026.</p>
+            <p>I led the entire design process — from initial wireframes and user flows in Figma to a complete design system with a consistent color palette, typography scale, and component library. The interface needed to communicate real-time slot availability intuitively and quickly.</p>
+            <p>The front-end was built in React.js with Tailwind CSS, implementing every design decision pixel-perfectly.</p>
+            <div class="project-award">🏆 2nd Place — Sankalpa Hackathon 2026</div>
+          </div>
+          <div class="project-meta">
+            <div class="meta-row">
+              <span class="meta-label">Role</span>
+              <span class="meta-value">UI/UX Designer · Front-End Lead</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Timeline</span>
+              <span class="meta-value">72 hours · Feb 2026</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Team</span>
+              <span class="meta-value">BugSlayers (4 members)</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Tools Used</span>
+              <div class="tag-list">
+                <span class="tag">Figma</span>
+                <span class="tag">React.js</span>
+                <span class="tag">Tailwind CSS</span>
+                <span class="tag">Node.js</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 2 -->
+    <div class="project-item reveal">
+      <div class="project-header" onclick="toggleProject(this)">
+        <div class="project-num">02</div>
+        <div class="project-title-wrap">
+          <div class="project-cat">UI/UX Design · Product Design</div>
+          <div class="project-title">MindSathi — Mental Health App</div>
+        </div>
+        <div class="project-arrow">+</div>
+      </div>
+      <div class="project-body">
+        <div class="project-inner">
+          <div class="project-desc">
+            <p>An AI-powered mental health support platform designed for students across Nepal and South Asia — addressing one of the most underserved UX spaces in the region.</p>
+            <p>The design challenge was significant: mental health interfaces need to feel safe, calm, and non-clinical — while remaining modern and engaging for students. I designed the complete visual language: a soft, accessible color system, calming typography, and gentle micro-interactions across the AI chat, mood tracker, breathing exercises, and crisis support pages.</p>
+            <p>The app was selected for the Harvard Health Hackathon National Finale at NTIC/KU — competing against teams from across Nepal.</p>
+            <div class="project-award">🎓 Harvard Health Hackathon — National Finalist</div>
+          </div>
+          <div class="project-meta">
+            <div class="meta-row">
+              <span class="meta-label">Role</span>
+              <span class="meta-value">Lead UI/UX Designer · Front-End Dev</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Timeline</span>
+              <span class="meta-value">Mar 2026</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Focus</span>
+              <span class="meta-value">Accessible design, emotional UX</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Tools Used</span>
+              <div class="tag-list">
+                <span class="tag">Figma</span>
+                <span class="tag">React (Vite)</span>
+                <span class="tag">Tailwind CSS</span>
+                <span class="tag">Claude API</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 3 -->
+    <div class="project-item reveal">
+      <div class="project-header" onclick="toggleProject(this)">
+        <div class="project-num">03</div>
+        <div class="project-title-wrap">
+          <div class="project-cat">Visual Design · Web Design · Branding</div>
+          <div class="project-title">Local Business Websites — Kathmandu</div>
+        </div>
+        <div class="project-arrow">+</div>
+      </div>
+      <div class="project-body">
+        <div class="project-inner">
+          <div class="project-desc">
+            <p>A freelance design practice serving 8+ local Kathmandu businesses — designing and building their complete web presence from scratch.</p>
+            <p>Each project began with understanding the brand's personality, target customers, and visual identity. No templates. Every site was designed with a distinctive aesthetic tailored to the business — from the warm, artisan feel of Almond Bakery Nepal to the bold street-food energy of Chef Kitchen Burger House.</p>
+            <p>Clients include: Almond Bakery Nepal, Cake Junction Nepal, AMA Bakery House, Chef Kitchen Burger House, Cafe 9, Zen को Achar, Lotè, and Neboer Carry.</p>
+          </div>
+          <div class="project-meta">
+            <div class="meta-row">
+              <span class="meta-label">Role</span>
+              <span class="meta-value">Designer · Developer · Strategist</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Timeline</span>
+              <span class="meta-value">2025 – Present</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Clients</span>
+              <span class="meta-value">8+ local Kathmandu businesses</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Tools Used</span>
+              <div class="tag-list">
+                <span class="tag">Figma</span>
+                <span class="tag">Adobe Ps</span>
+                <span class="tag">Illustrator</span>
+                <span class="tag">HTML/CSS</span>
+                <span class="tag">React</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills-section" id="skills">
+  <p class="section-label reveal">// Capabilities</p>
+  <h2 class="section-title reveal">What I bring<br>to the table.</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-icon">◈</div>
+      <div class="skill-name">Visual Design</div>
+      <div class="skill-tools">Adobe Photoshop · Illustrator · XD · Canva · Typography · Color Theory · Brand Identity</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">◉</div>
+      <div class="skill-name">UI / UX</div>
+      <div class="skill-tools">Figma · Wireframing · Prototyping · User Flows · Responsive Design · Design Systems</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">◐</div>
+      <div class="skill-name">Development</div>
+      <div class="skill-tools">React.js · Tailwind CSS · HTML5 · CSS3 · JavaScript · Node.js · Git / GitHub</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <p class="section-label" style="color: var(--accent); margin-bottom:16px; font-family: var(--mono); font-size:10px; letter-spacing:3px; text-transform:uppercase;">// Let's work together</p>
+  <h2 class="section-title">GET IN<br>TOUCH.</h2>
+  <p class="contact-sub">Open to full-time roles, internships & freelance projects</p>
+  <div class="contact-links">
+    <a class="contact-link" href="mailto:rohanOmaske@gmail.com">rohanOmaske@gmail.com</a>
+    <a class="contact-link" href="https://github.com/rohan-xtha" target="_blank">github.com/rohan-xtha</a>
+    <a class="contact-link" href="https://linkedin.com/in/rohan-shrestha-379340367" target="_blank">LinkedIn</a>
+    <a class="contact-link" href="tel:+9779764575290">+977 9764575290</a>
+  </div>
+  <p class="footer-note">Rohan Shrestha · Kathmandu, Nepal · 2026</p>
+</section>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  const animate = () => {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animate);
+  };
+  animate();
+  document.querySelectorAll('a, button, .project-header, .skill-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.width = '20px'; cursor.style.height = '20px'; ring.style.width = '52px'; ring.style.height = '52px'; });
+    el.addEventListener('mouseleave', () => { cursor.style.width = '12px'; cursor.style.height = '12px'; ring.style.width = '36px'; ring.style.height = '36px'; });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => obs.observe(r));
+
+  // Project accordion
+  function toggleProject(header) {
+    const body = header.nextElementSibling;
+    const arrow = header.querySelector('.project-arrow');
+    const isOpen = body.classList.contains('open');
+    document.querySelectorAll('.project-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.project-arrow').forEach(a => a.textContent = '+');
+    if (!isOpen) { body.classList.add('open'); arrow.textContent = '−'; }
+  }
+</script>
+</body>
+</html>
