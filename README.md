@@ -5,10 +5,7 @@ A modern, animated, and fully responsive personal portfolio website showcasing m
 This portfolio blends strong visual storytelling + interactive web design to present projects, skills, and experience in a unique and memorable way.
 
 ✨ Live Preview
-
-(Add your deployed link here when ready)
-Example: https://your-portfolio.vercel.app
-
+https://rohan-xtha.github.io/graphic-designer/#
 📌 Features
 🎨 Modern brutalist + minimalist design style
 🖱️ Custom animated cursor with smooth follow effect
